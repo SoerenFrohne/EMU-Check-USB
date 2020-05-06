@@ -379,7 +379,7 @@ public class FTDIInterface {
 	/**
 	 * Reads data from device up to the size of the buffer. This call will
 	 * block if the requested number of bytes is not immediately available.
-	 * Call {@link #getQueueStatus()} to get the number of bytes actually
+	 * Call {@link #getQueueStatus(long)} ()} to get the number of bytes actually
 	 * available to avoid blocking. 
 	 * 
 	 * @param	ftHandle		D2XX device handle
@@ -451,7 +451,7 @@ public class FTDIInterface {
 	 * @param	ftHandle		D2XX device handle
 	 * @param	baudRate		desired baud rate
 	 * @throws	FTDIException	FT_SetBaudRate returned a non-zero status code
-	 * @see						Device#setBaudRate()
+	 * @see						Device#setBaudRate(int)
 	 * @since	0.1
 	 */
 	native static void setBaudRate(long ftHandle, int baudRate) throws FTDIException;
