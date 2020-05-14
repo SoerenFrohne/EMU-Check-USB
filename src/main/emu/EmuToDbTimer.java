@@ -1,4 +1,4 @@
-package emu;
+package main.emu;
 
 import lombok.Setter;
 

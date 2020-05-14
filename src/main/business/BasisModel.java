@@ -1,68 +1,62 @@
-package business;
+package main.business;
 
-import business.db.DatabaseService;
+import javafx.collections.FXCollections;
+import lombok.Getter;
+import main.business.db.DatabaseService;
 import javafx.collections.ObservableList;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Collections;
 
-public final class BasisModel {
-	
-	private static BasisModel basisModel;
-	
-	public static BasisModel getInstance(){
-		if (basisModel == null){
-			basisModel = new BasisModel();
-		}
-		return basisModel;
-	}
-	
-	private BasisModel(){		
-	}
-	
-	private final DatabaseService databaseService = new DatabaseService();
-	
-	// wird zukuenftig noch instanziiert
-	private final ObservableList<TestSeries> messreihen = null;
-	
-	public Measurement[] readMeasurementsFromDatabase(int seriesId)
-		throws ClassNotFoundException, SQLException{
-		Measurement[] measurements;
-		this.databaseService.connectDb();
-		measurements = this.databaseService.readMeasurements(seriesId);
-		this.databaseService.closeDb();
-		return measurements;
-	} 
-	
-	public void speichereMessungInDb(int messreihenId, Measurement measurement)
-		throws ClassNotFoundException, SQLException{
-		this.databaseService.connectDb();
-		this.databaseService.InsertMeasurement(messreihenId, measurement);
-		this.databaseService.closeDb();
-	} 
-	
-	public void leseMessreihenInklusiveMessungenAusDb()
-		throws ClassNotFoundException, SQLException{
-		this.databaseService.connectDb();
-		TestSeries[] messreihenAusDb
-		    = this.databaseService.readTestSeriesInclusiveMeasurements();
-		this.databaseService.closeDb();
-		int anzahl = this.messreihen.size();
-		if (anzahl > 0) {
-			this.messreihen.subList(0, anzahl).clear();
-			Collections.addAll(this.messreihen, messreihenAusDb);
-		}
-	}
-		  
-	public void speichereMessreiheInDb(TestSeries testSeries)
-	  	throws ClassNotFoundException, SQLException{
-	  	this.databaseService.connectDb();
-	  	this.databaseService.InsertTestSeries(testSeries);
-	  	this.databaseService.closeDb();
-	  	this.messreihen.add(testSeries);
-	} 
-	
-  	public String getDaten(){
-    	return "in getDaten";
-	} 
- }
+public enum BasisModel {
+
+    // Singleton instance
+    INSTANCE;
+
+    @Getter
+    private final ObservableList<TestSeries> currentSeries;
+    private final DatabaseService databaseService = new DatabaseService();
+
+    BasisModel() {
+        currentSeries = FXCollections.observableArrayList();
+    }
+
+    public Measurement[] readMeasurementsFromDatabase(int seriesId) throws ClassNotFoundException, SQLException {
+        Measurement[] measurements;
+        this.databaseService.connectDb();
+        measurements = this.databaseService.readMeasurements(seriesId).toArray(new Measurement[0]);
+        this.databaseService.closeDb();
+        return measurements;
+    }
+
+    public void speichereMessungInDb(int messreihenId, Measurement measurement)
+            throws ClassNotFoundException, SQLException {
+        this.databaseService.connectDb();
+        this.databaseService.InsertMeasurement(messreihenId, measurement);
+        this.databaseService.closeDb();
+    }
+
+    public void readTestSeriesFromDatabaseInclusiveMeasurements() throws ClassNotFoundException, SQLException {
+        this.databaseService.connectDb();
+        TestSeries[] series = this.databaseService.readTestSeriesInclusiveMeasurements();
+        this.databaseService.closeDb();
+        int size = series.length;
+        System.out.println("Read from database with size: " + Arrays.toString(series));
+        if (size > 0) {
+            this.currentSeries.clear();
+            this.currentSeries.addAll(series);
+        }
+    }
+
+    public void saveTestSeriesToDatabase(TestSeries testSeries) throws ClassNotFoundException, SQLException {
+        this.databaseService.connectDb();
+        this.databaseService.InsertTestSeries(testSeries);
+        this.databaseService.closeDb();
+        this.currentSeries.add(testSeries);
+    }
+
+    public String getDaten() {
+        return "in getDaten";
+    }
+}

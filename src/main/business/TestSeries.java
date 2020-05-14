@@ -1,22 +1,26 @@
-package business;
+package main.business;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.ArrayList;
+
 @Data
+@AllArgsConstructor
 public class TestSeries {
 
     private int id;
     private int timeInterval;
     private String consumer;
     private String measurand;
-    private Measurement[] measurements;
+    private ArrayList<Measurement> measurements;
 
     public TestSeries(int id, int timeInterval,
-                      String verbraucher, String measurand) {
+                      String consumer, String measurand) {
         super();
         this.id = id;
         this.timeInterval = timeInterval;
-        this.consumer = verbraucher;
+        this.consumer = consumer;
         this.measurand = measurand;
     }
 

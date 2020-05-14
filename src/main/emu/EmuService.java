@@ -1,15 +1,11 @@
-package emu;
+package main.emu;
 
 import net.sf.yad2xx.Device;
 import net.sf.yad2xx.FTDIException;
 import net.sf.yad2xx.FTDIInterface;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 /**
- * An EmuService is an interface between an emu device and the user.
+ * An EmuService is an interface between an main.emu device and the user.
  *
  * @author Sören Frohne
  */
@@ -48,7 +44,7 @@ public class EmuService extends Thread {
     }
 
     /**
-     * Establishes a connection to the emu device.
+     * Establishes a connection to the main.emu device.
      * If a connection is already established, the call will be ignored.
      */
     public void connect() {
@@ -60,7 +56,7 @@ public class EmuService extends Thread {
     }
 
     /**
-     * Stops the connection to the emu device
+     * Stops the connection to the main.emu device
      */
     public void disconnect() {
         connected = false;
