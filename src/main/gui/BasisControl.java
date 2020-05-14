@@ -1,14 +1,14 @@
-package gui;
+package main.gui;
 
-import business.*;
+import main.business.*;
 
 import java.sql.SQLException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import emu.EmuRequest;
-import emu.EmuService;
+import main.emu.EmuRequest;
+import main.emu.EmuService;
 import javafx.stage.Stage;
 
 public class BasisControl {
@@ -21,7 +21,7 @@ public class BasisControl {
 
 
     public BasisControl(Stage primaryStage) {
-        this.basisModel = BasisModel.getInstance();
+        this.basisModel = BasisModel.INSTANCE;
         this.basisView = new BasisView(this, primaryStage, this.basisModel);
         service = new EmuService();
         primaryStage.show();

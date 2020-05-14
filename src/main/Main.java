@@ -1,7 +1,11 @@
-package emu;
+package main;
 
-import gui.BasisControl;
+import main.emu.EmuRequest;
+import main.emu.EmuService;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
@@ -12,12 +16,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //To-Do: Testcases erstellen
-        //System.out.println(Arrays.toString(AsciiUtility.convertAsciiToHexadecimal("SOH R1 STX 96.1.0() ETX", " ")));
-        //System.out.println(Arrays.toString(AsciiUtility.convertAsciiToHexadecimal("SOH R1 STX 128.128() ETX", " ")));
-        //getCommand();
+        Parent root = FXMLLoader.load(getClass().getResource("resources/fxml/timeseries.fxml"));
 
-        new BasisControl(primaryStage);
+        primaryStage.setScene(new Scene(root));
         primaryStage.setTitle("Hello World");
         primaryStage.show();
     }

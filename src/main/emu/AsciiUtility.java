@@ -1,7 +1,6 @@
-package emu;
+package main.emu;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class AsciiUtility {
     private static final ControlCharacter[] CONTROL_CHARACTERS = new ControlCharacter[]{
