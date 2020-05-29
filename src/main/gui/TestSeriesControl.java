@@ -17,12 +17,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TestSeriesControl {
-    public TextField idInput;
+    public Spinner<Integer> idInput;
     public TextField consumerInput;
-    public TextField measurandInput;
-    public TextField intervalInput;
+    public ComboBox<String> measurandInput;
+    public Spinner<Integer> intervalInput;
     public TableView<TestSeries> table;
     public TableColumn<TestSeries, Integer> idColumn;
     public TableColumn<TestSeries, Integer> intervalColumn;
@@ -40,13 +41,32 @@ public class TestSeriesControl {
     @FXML
     private void initialize() {
 
+        // Init menu
+        idInput.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE));
+        intervalInput.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE));
+
+        String[] items = Stream.of(EmuRequest.values())
+                .filter(emuRequest -> !emuRequest.getUnit().equals(""))
+                .map(Enum::name)
+                .toArray(String[]::new);
+        measurandInput.getItems().setAll(items);
+        measurandInput.getSelectionModel().selectFirst();
+
         // Init table view
+
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        idColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 50% width
+        intervalColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 30% width
+        consumerColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15);
+        measurandColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15);
+        measurementsColumn.setMaxWidth(1f * Integer.MAX_VALUE * 40);
+
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         intervalColumn.setCellValueFactory(new PropertyValueFactory<>("timeInterval"));
         consumerColumn.setCellValueFactory(new PropertyValueFactory<>("consumer"));
         measurandColumn.setCellValueFactory(new PropertyValueFactory<>("measurand"));
         measurementsColumn.setCellValueFactory(new PropertyValueFactory<>("measurements"));
-        measurementsColumn.setCellFactory(cellDataFeatures -> new TableCell<TestSeries,ArrayList<Measurement>>() {
+        measurementsColumn.setCellFactory(cellDataFeatures -> new TableCell<TestSeries, ArrayList<Measurement>>() {
             @Override
             protected void updateItem(ArrayList<Measurement> measurements, boolean empty) {
                 super.updateItem(measurements, empty);
@@ -80,7 +100,8 @@ public class TestSeriesControl {
         executorService = Executors.newSingleThreadScheduledExecutor();
         final int[] i = {selectedSeries.getMeasurements().size()};
         executorService.scheduleAtFixedRate(() -> {
-            selectedSeries.getMeasurements().add(getMeasurementFromEmu(String.valueOf(selectedSeries.getId()), Integer.toString(i[0])));
+            selectedSeries.getMeasurements().add(getMeasurementFromEmu(String.valueOf(selectedSeries.getId()), Integer.toString(i[0]),
+                    EmuRequest.valueOf(selectedSeries.getMeasurand())));
             i[0]++;
             table.refresh();
         }, 0, selectedSeries.getTimeInterval(), TimeUnit.SECONDS);
@@ -99,12 +120,12 @@ public class TestSeriesControl {
         System.out.println("Scheduler stopped");
     }
 
-    public Measurement getMeasurementFromEmu(String messreihenId, String laufendeNummer) {
+    public Measurement getMeasurementFromEmu(String messreihenId, String laufendeNummer, EmuRequest request) {
         Measurement measurement;
         int messId = Integer.parseInt(messreihenId);
         int lfdNr = Integer.parseInt(laufendeNummer);
 
-        emuService.sendRequest(EmuRequest.WORK);
+        emuService.sendRequest(request);
         measurement = new Measurement(lfdNr, emuService.parseResult());
         this.saveMeasurementsToDatabase(messId, measurement);
         return measurement;
@@ -141,10 +162,10 @@ public class TestSeriesControl {
         try {
             basisModel.saveTestSeriesToDatabase(
                     new TestSeries(
-                            Integer.parseInt(idInput.getText()),
-                            Integer.parseInt(intervalInput.getText()),
+                            idInput.getValue(),
+                            intervalInput.getValue(),
                             consumerInput.getText(),
-                            measurandInput.getText())
+                            measurandInput.getValue())
             );
             readTestSeries();
         } catch (JsonProcessingException e) {

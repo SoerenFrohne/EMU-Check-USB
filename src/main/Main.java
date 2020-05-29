@@ -19,7 +19,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("resources/fxml/timeseries.fxml"));
 
         primaryStage.setScene(new Scene(root));
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("EMU Tool");
         primaryStage.setOnCloseRequest(e -> System.exit(0));
         primaryStage.show();
     }
