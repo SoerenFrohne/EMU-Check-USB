@@ -77,8 +77,8 @@ public class TestSeriesControl {
 
     @FXML
     public void startScheduler() {
-        if (executorService == null) executorService = Executors.newSingleThreadScheduledExecutor();
-        final int[] i = {0};
+        executorService = Executors.newSingleThreadScheduledExecutor();
+        final int[] i = {selectedSeries.getMeasurements().size()};
         executorService.scheduleAtFixedRate(() -> {
             selectedSeries.getMeasurements().add(getMeasurementFromEmu(String.valueOf(selectedSeries.getId()), Integer.toString(i[0])));
             i[0]++;
@@ -146,8 +146,10 @@ public class TestSeriesControl {
                             consumerInput.getText(),
                             measurandInput.getText())
             );
-        } catch (ClassNotFoundException | SQLException e) {
-            showError("Messreihe kann nicht gespeichert werden");
+            readTestSeries();
+        } catch (JsonProcessingException e) {
+            showError("Fehler bei der Serialisierung der Daten.");
+            e.printStackTrace();
         }
     }
 }

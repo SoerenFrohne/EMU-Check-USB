@@ -71,10 +71,15 @@ public enum BasisModel {
         }
     }
 
-    public void saveTestSeriesToDatabase(TestSeries testSeries) throws ClassNotFoundException, SQLException {
-        this.databaseService.connectDb();
-        this.databaseService.InsertTestSeries(testSeries);
-        this.databaseService.closeDb();
+    public void saveTestSeriesToDatabase(TestSeries testSeries) throws JsonProcessingException {
+        WebResource webResource = client.resource(REST_URL + "/testseries");
+        String input = objectMapper.writeValueAsString(testSeries);
+        System.out.println("Creating Testseries: " + input);
+        ClientResponse response = webResource.type("application/json").post(ClientResponse.class, input);
+
+        String output = response.getEntity(String.class);
+        System.out.println(output);
+
         this.currentSeries.add(testSeries);
     }
 
