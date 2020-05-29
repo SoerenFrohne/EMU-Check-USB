@@ -20,6 +20,7 @@ public class Main extends Application {
 
         primaryStage.setScene(new Scene(root));
         primaryStage.setTitle("Hello World");
+        primaryStage.setOnCloseRequest(e -> System.exit(0));
         primaryStage.show();
     }
 

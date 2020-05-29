@@ -1,10 +1,7 @@
 package main.gui;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -16,7 +13,6 @@ import main.emu.EmuService;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -50,7 +46,7 @@ public class TestSeriesControl {
         consumerColumn.setCellValueFactory(new PropertyValueFactory<>("consumer"));
         measurandColumn.setCellValueFactory(new PropertyValueFactory<>("measurand"));
         measurementsColumn.setCellValueFactory(new PropertyValueFactory<>("measurements"));
-        measurementsColumn.setCellFactory(cellDataFeatures -> new TableCell<>() {
+        measurementsColumn.setCellFactory(cellDataFeatures -> new TableCell<TestSeries,ArrayList<Measurement>>() {
             @Override
             protected void updateItem(ArrayList<Measurement> measurements, boolean empty) {
                 super.updateItem(measurements, empty);
@@ -114,13 +110,12 @@ public class TestSeriesControl {
         return measurement;
     }
 
-    private void saveMeasurementsToDatabase(int messreihenId, Measurement measurement) {
+    private void saveMeasurementsToDatabase(int seriesId, Measurement measurement) {
         try {
-            this.basisModel.speichereMessungInDb(messreihenId, measurement);
-        } catch (ClassNotFoundException cnfExc) {
-            showError("Fehler bei der Verbindungerstellung zur Datenbank.");
-        } catch (SQLException sqlExc) {
-            showError("Fehler beim Zugriff auf die Datenbank.");
+            this.basisModel.saveMeasurementToDb(seriesId, measurement);
+        } catch (JsonProcessingException e) {
+            showError("Fehler bei der Serialisierung der Messreihe.");
+            e.printStackTrace();
         }
     }
 
@@ -135,10 +130,8 @@ public class TestSeriesControl {
     public void readTestSeries() {
         try {
             basisModel.readTestSeriesFromDatabaseInclusiveMeasurements();
-        } catch (SQLException e) {
-            showError("Fehler beim Zugriff aus MySQL!");
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
+            showError("Fehler beim Datenzugriff!");
             e.printStackTrace();
         }
     }

@@ -1,15 +1,16 @@
 package main.gui;
 
-import main.business.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import javafx.stage.Stage;
+import main.business.BasisModel;
+import main.business.Measurement;
+import main.emu.EmuRequest;
+import main.emu.EmuService;
 
-import java.sql.SQLException;
+import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import main.emu.EmuRequest;
-import main.emu.EmuService;
-import javafx.stage.Stage;
 
 public class BasisControl {
 
@@ -40,13 +41,8 @@ public class BasisControl {
 
         try {
             measurements = this.basisModel.readMeasurementsFromDatabase(id);
-        } catch (ClassNotFoundException cnfExc) {
-            basisView.showError(
-                    "Fehler bei der Verbindungerstellung zur Datenbank.");
-        } catch (SQLException sqlExc) {
-            basisView.showError(
-                    "Fehler beim Zugriff auf die Datenbank.");
-            sqlExc.printStackTrace();
+        } catch (IOException e) {
+            basisView.showError("Fehler bei der Verbindungerstellung zur Datenbank.");
         }
         return measurements;
     }
@@ -79,13 +75,10 @@ public class BasisControl {
 
     private void saveMeasurementsToDatabase(int messreihenId, Measurement measurement) {
         try {
-            this.basisModel.speichereMessungInDb(messreihenId, measurement);
-        } catch (ClassNotFoundException cnfExc) {
-            basisView.showError(
-                    "Fehler bei der Verbindungerstellung zur Datenbank.");
-        } catch (SQLException sqlExc) {
-            basisView.showError(
-                    "Fehler beim Zugriff auf die Datenbank.");
+            this.basisModel.saveMeasurementToDb(messreihenId, measurement);
+        } catch (JsonProcessingException e) {
+            basisView.showError("Fehler bei der Serialisierung der Daten.");
+            e.printStackTrace();
         }
     }
 
