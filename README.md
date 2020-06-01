@@ -7,7 +7,7 @@
 ### Messungen mit dem EMU-Messgerät erfassen und speichern
 * EmuService kümmert sich um die Abfrage als eigener Thread, der pausiert bis er das entsprechende EOF-Signal erhält
 ```java
-// send request and await answer
+// send request and await answer in sendRequest()
 synchronized (requestLock) {
     try {
         requestLock.wait();
@@ -18,7 +18,7 @@ synchronized (requestLock) {
     }
 }
 
-// Check for completion and notify
+// Check for completion and notify in run()
 if (byteArray[0] == currentRequest.getEndOfSignalPointer()) {
     synchronized (requestLock) {
         requestLock.notify();
@@ -28,12 +28,25 @@ if (byteArray[0] == currentRequest.getEndOfSignalPointer()) {
 * Beim Start des Programms wird automatisch in den Programming Mode geschaltet
 * AsciUtitlity hilft beim Übersetzen der Control Characters in Bytecode (--> kein umständliches Hardcoden nötig) und hilft so beim Enum EmuRequest für das Stellen von Abfragen.
 ### Mehrere Messungenmit dem EMU-Messgerät erfassen und speichern
+* Nutzen eines [ScheduledExecutorService](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ScheduledExecutorService.html), der über die jeweiligen Knopfdrücke gestoppt und gestartet wird
+```java
+if (executorService == null) executorService = Executors.newSingleThreadScheduledExecutor();
+        final int[] i = {0};
+        executorService.scheduleAtFixedRate(() -> {
+            selectedSeries.getMeasurements().add(getMeasurementFromEmu(String.valueOf(selectedSeries.getId()), Integer.toString(i[0])));
+            i[0]++;
+            table.refresh();
+}, 0, selectedSeries.getTimeInterval(), TimeUnit.SECONDS);
+```
 
 ## Projekttermin 2 - JavaFX
-### Oberfläche
 ### Messreihen erstellen und tabellarisch anzeigen
-### Messungenzu einer Messreihe erfassenundspeichern
+* Oberfläche angelehnt an Vorgabe, aber um LayoutManager erweitert für Responsivität
+### Messungenzu einer Messreihe erfassen und speichern
+* MVC: View über FXML, aktuelles Modell in BasisModel, Control über TestSeriesController
 
 ## Projekttermin 3 - 
 ### RESTful Webservice erstellen unter Verwendung von JSON
-### Aufruf des RESTful Webservices vom Java-Client unter Verwendung vonJSON
+* Webservice zu finden unter folgendem [Repository](https://github.com/SoerenFrohne/RestServer)
+### Aufruf des RESTful Webservices vom Java-Client unter Verwendung von JSON
+* BasisModel als Client angepasst
