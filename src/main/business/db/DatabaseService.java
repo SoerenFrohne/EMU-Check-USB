@@ -1,11 +1,10 @@
 package main.business.db;
 
+import main.business.Measurement;
+import main.business.TestSeries;
+
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
-
-import main.business.*;
 
 public class DatabaseService {
 
