@@ -50,3 +50,11 @@ if (executorService == null) executorService = Executors.newSingleThreadSchedule
 * Webservice zu finden unter folgendem [Repository](https://github.com/SoerenFrohne/RestServer)
 ### Aufruf des RESTful Webservices vom Java-Client unter Verwendung von JSON
 * BasisModel als Client angepasst
+```java
+WebResource webResource = client.resource(REST_URL + "/testseries/" + seriesId);
+String input = objectMapper.writeValueAsString(measurement);
+System.out.println("Saving Measurement: " + input);
+ClientResponse response = webResource.type("application/json").post(ClientResponse.class, input);
+
+String output = response.getEntity(String.class);
+```
