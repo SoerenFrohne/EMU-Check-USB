@@ -62,11 +62,12 @@ String output = response.getEntity(String.class);
 ## Projekttermin 6 - Testabdeckung
 ### Kontrollflussgraph
 ```java
-if (timeInterval < 15) {
-    throw new IllegalArgumentException("time interval must be higher than 14");
-} else if (timeInterval > 3600) {
-    throw new IllegalArgumentException("time interval must be lower than 3600");
+if (timeInterval < 15) { //1
+    throw new IllegalArgumentException("time interval must be higher than 14"); //2
+} else if (timeInterval > 3600) { //3
+    throw new IllegalArgumentException("time interval must be lower than 3600"); //4
 } else {
-    this.timeInterval = timeInterval;
+    this.timeInterval = timeInterval; //5
 }
 ```
+![Kontrollflussgraph für die Methode](https://raw.githubusercontent.com/SoerenFrohne/EMU-Check-USB/master/controlflow.png)
