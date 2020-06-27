@@ -58,3 +58,15 @@ ClientResponse response = webResource.type("application/json").post(ClientRespon
 
 String output = response.getEntity(String.class);
 ```
+
+## Projekttermin 6 - Testabdeckung
+### Kontrollflussgraph
+```java
+if (timeInterval < 15) {
+    throw new IllegalArgumentException("time interval must be higher than 14");
+} else if (timeInterval > 3600) {
+    throw new IllegalArgumentException("time interval must be lower than 3600");
+} else {
+    this.timeInterval = timeInterval;
+}
+```
