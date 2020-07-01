@@ -91,3 +91,6 @@ if (timeInterval < 15) { //1
 }
 ```
 ![Kontrollflussgraph für die Methode](https://raw.githubusercontent.com/SoerenFrohne/EMU-Check-USB/master/controlflow.png)
+
+### Bedingungsüberdeckung
+Es müssen die Bedingungen timeInterval < 15, timeInterval > 3600 und 15 < timeInterval < 3600 getestet werden.
