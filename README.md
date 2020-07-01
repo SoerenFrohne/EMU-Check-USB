@@ -69,12 +69,12 @@ String output = response.getEntity(String.class);
 | consumer      | Strings ohne "" und null  | {Strings}, {" ", null, ""}            |
 | measurand     | Arbeit und Leistung       | {"Arbeit", "Leistung"}, {Strings}     |
 
-#### Äquivalenzklassenbildung (immer 
+#### Äquivalenzklassenbildung (immer zwei Klassen verschmelzen)
 * **{Integer.MIN_VALUE; Integer.MAX_VALUE} x {15, 16, ...} x {Strings} x {"Arbeit", "Leistung"} - valid**
 * **{Integer.MIN_VALUE; Integer.MAX_VALUE} x {15, 16, ...} x {Strings} x {Strings} - IllegalArgumentException**
 * **{Integer.MIN_VALUE; Integer.MAX_VALUE} x {15, 16, ...} x {" ", null, ""} x {"Arbeit", "Leistung"} - IllegalArgumentException**
 * {Integer.MIN_VALUE; Integer.MAX_VALUE} x {15, 16, ...} x {" ", null, ""} x {Strings} - IllegalArgumentException
-* **{Integer.MIN_VALUE; Integer.MAX_VALUE} x {-2, -1, 0, ..., 14} x {Strings} x {"Arbeit", "Leistung"} - valid - IllegalArgumentException**
+* **{Integer.MIN_VALUE; Integer.MAX_VALUE} x {-2, -1, 0, ..., 14} x {Strings} x {"Arbeit", "Leistung"} - IllegalArgumentException**
 * {Integer.MIN_VALUE; Integer.MAX_VALUE} x {-2, -1, 0, ..., 14} x {Strings} x {Strings} - IllegalArgumentException
 * **{Integer.MIN_VALUE; Integer.MAX_VALUE} x {-2, -1, 0, ..., 14} x {" ", null, ""} x {"Arbeit", "Leistung"} - IllegalArgumentException**
 * {Integer.MIN_VALUE; Integer.MAX_VALUE} x {-2, -1, 0, ..., 14} x {" ", null, ""} x {Strings} - IllegalArgumentException
