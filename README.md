@@ -58,3 +58,22 @@ ClientResponse response = webResource.type("application/json").post(ClientRespon
 
 String output = response.getEntity(String.class);
 ```
+## Projekttermin 4 - JUnit
+### Äquivalenzklassenbildung
+ * id - Menge aller Integer-Werte: {Integer.MIN_VALUE; Integer.MAX_VALUE} 
+ * timeInterval - 15, 16, ...: {-2, -1, 0, ..., 14} {15, 16, ...}
+ * consumer - Strings ohne "" und null: {Strings}, {" ", null, ""}
+ * measurand - Arbeit und Leistung: {"Arbeit", "Leistung"}, {Strings}
+
+## Projekttermin 6 - Testabdeckung
+### Kontrollflussgraph
+```java
+if (timeInterval < 15) { //1
+    throw new IllegalArgumentException("time interval must be higher than 14"); //2
+} else if (timeInterval > 3600) { //3
+    throw new IllegalArgumentException("time interval must be lower than 3600"); //4
+} else {
+    this.timeInterval = timeInterval; //5
+}
+```
+![Kontrollflussgraph für die Methode](https://raw.githubusercontent.com/SoerenFrohne/EMU-Check-USB/master/controlflow.png)
