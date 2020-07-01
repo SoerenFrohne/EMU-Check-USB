@@ -82,15 +82,15 @@ String output = response.getEntity(String.class);
 ## Projekttermin 6 - Testabdeckung
 ### Kontrollflussgraph
 ```java
-if (timeInterval < 15) { //1
-    throw new IllegalArgumentException("time interval must be higher than 14"); //2
-} else if (timeInterval > 3600) { //3
-    throw new IllegalArgumentException("time interval must be lower than 3600"); //4
+if (timeInterval >= 15 && timeInterval <= 3600) { //1
+    this.timeInterval = timeInterval; //2
+} else if (timeInterval < 15) { //3
+    throw new IllegalArgumentException("Das Zeitintervall muss mindestens 15 Sekunden lang sein."); //4
 } else {
-    this.timeInterval = timeInterval; //5
+    throw new IllegalArgumentException("Das Zeitintervall darf hoechstens 3600 Sekunden lang sein."); //5
 }
 ```
-![Kontrollflussgraph für die Methode](https://raw.githubusercontent.com/SoerenFrohne/EMU-Check-USB/master/controlflow.png)
+![Kontrollflussgraph für die Methode](https://raw.githubusercontent.com/SoerenFrohne/EMU-Check-USB/master/DiagrammA.png)
 
 ### Bedingungsüberdeckung
 Es müssen die Bedingungen timeInterval < 15, timeInterval > 3600 und 15 < timeInterval < 3600 getestet werden.
