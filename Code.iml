@@ -5,17 +5,35 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="javafx" level="project" />
     <orderEntry type="library" name="commons-cli-1.4" level="project" />
     <orderEntry type="library" name="native" level="project" />
-    <orderEntry type="library" name="mysql-connector-java-8.0.15" level="application" />
     <orderEntry type="library" name="jackson-annotations-2.9.8" level="project" />
-    <orderEntry type="library" name="javafx" level="application" />
-    <orderEntry type="library" name="lombok" level="application" />
     <orderEntry type="library" name="jersey" level="project" />
     <orderEntry type="library" name="jsr311-api-1.1.1" level="project" />
+    <orderEntry type="library" name="mysql-connector-java-8.0.15" level="project" />
+    <orderEntry type="library" name="jersey" level="project" />
+    <orderEntry type="library" name="lombok" level="project" />
+    <orderEntry type="library" name="javafx" level="project" />
+    <orderEntry type="module-library" scope="TEST">
+      <library name="JUnit5.4">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../Libs/junit-jupiter-5.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Libs/junit-jupiter-api-5.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Libs/apiguardian-api-1.0.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Libs/opentest4j-1.1.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Libs/junit-platform-commons-1.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Libs/junit-jupiter-params-5.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Libs/junit-jupiter-engine-5.4.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Libs/junit-platform-engine-1.4.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="junit" level="project" />
   </component>
 </module>
